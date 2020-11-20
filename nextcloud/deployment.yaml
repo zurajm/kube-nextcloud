@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: app
+  name: app
+spec:
+  selector:
+    matchLabels:
+      component: app
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        component: app
+    spec:
+      containers:
+        - image: nextcloud:apache
+          imagePullPolicy: IfNotPresent
+          name: app
+          ports:
+            - containerPort: 80
+          env:
+            - name: TRUSTED_PROXIES
+              value: "10.42.0.0/16"
+            - name: APACHE_DISABLE_REWRITE_IP
+              value: "1"
+            - name: OVERWRITEHOST
+              value: cloud.zuraj.com
+            - name: OVERWRITEPROTOCOL
+              value: https
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: db-secrets
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: db-secrets
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: db-secrets
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_HOST
+                  name: db-secrets
+            - name: REDIS_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST_PASSWORD
+                  name: db-secrets
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: app-persistent-storage
+      restartPolicy: Always
+      volumes:
+        - name: app-persistent-storage
+          persistentVolumeClaim:
+            claimName: app-pvc

@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: headers
+spec:
+  headers:
+    customResponseHeaders:
+      Upgrade: "" # Removes
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect
+spec:
+  redirectRegex:
+    permanent: true
+    regex: "https://(.*)/.well-known/(card|cal)dav"
+    replacement: "https://${1}/remote.php/dav/"

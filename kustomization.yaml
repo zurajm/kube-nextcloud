@@ -1,0 +1,30 @@
+namespace: nextcloud
+namePrefix: nextcloud-
+
+commonLabels:
+  app: nextcloud
+  version: "19"
+
+bases:
+  - redis
+  - nextcloud
+  - cron
+
+resources:
+  - secrets/secret.yaml
+
+images:
+  - name: nextcloud:apache
+    newTag: 19.0.3-apache
+  - name: redis:alpine
+    newTag: 6.0.5-alpine
+
+patchesStrategicMerge:
+  - patch-deployment.yaml
+
+vars:
+  - name: REDIS_SERVICE
+    objref:
+      apiVersion: v1
+      kind: Service
+      name: redis

@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: le-prod
+    traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-headers@kubernetescrd,nextcloud-nextcloud-redirect@kubernetescrd
+  name: ingress
+  namespace: nextcloud
+spec:
+  rules:
+  - host: cloud.zuraj.com
+    http:
+      paths:
+      - backend:
+          serviceName: app
+          servicePort: 80
+  tls:
+  - hosts:
+    - cloud.zuraj.com
+    secretName: cloud.zuraj.com-tls

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: redis
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      component: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: redis
+    spec:
+      containers:
+        - image: redis:alpine
+          name: redis
+          volumeMounts:
+            - mountPath: /usr/local/etc/
+              name: redis-conf
+          ports:
+            - containerPort: 6379
+          command: ["redis-server", "/usr/local/etc/redis.conf"]
+      restartPolicy: Always
+      volumes:
+      - name: redis-conf
+        configMap:
+          name: nextcloud-redis-conf
