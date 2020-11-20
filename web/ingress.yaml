@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: le-prod
-    traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-headers@kubernetescrd,nextcloud-nextcloud-redirect@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-headers@kubernetescrd,nextcloud-nextcloud-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-headers@kubernetescrd
   name: ingress
-  namespace: nextcloud
 spec:
   rules:
   - host: cloud.zuraj.com
     http:
       paths:
       - backend:
-          serviceName: app
+          serviceName: web
           servicePort: 80
   tls:
   - hosts:

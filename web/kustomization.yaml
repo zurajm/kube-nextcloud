@@ -1,0 +1,12 @@
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+configMapGenerator:
+- name: conf-nginx
+  files:
+  - nginx.conf
+
+generatorOptions:
+  disableNameSuffixHash: true
