@@ -8,14 +8,15 @@ commonLabels:
 bases:
   - redis
   - nextcloud
+  - web
   - cron
 
 resources:
   - secrets/secret.yaml
 
 images:
-  - name: nextcloud:apache
-    newTag: 19.0.3-apache
+  - name: nextcloud
+    newTag: 19.0.5-fpm-alpine
   - name: redis:alpine
     newTag: 6.0.5-alpine
 

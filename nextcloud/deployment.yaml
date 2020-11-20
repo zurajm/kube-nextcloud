@@ -17,16 +17,16 @@ spec:
         component: app
     spec:
       containers:
-        - image: nextcloud:apache
+        - image: nextcloud:fpm-alpine
           imagePullPolicy: IfNotPresent
           name: app
-          ports:
-            - containerPort: 80
+          # ports:
+          #   - containerPort: 9000
           env:
-            - name: TRUSTED_PROXIES
-              value: "10.42.0.0/16"
-            - name: APACHE_DISABLE_REWRITE_IP
-              value: "1"
+            # - name: TRUSTED_PROXIES
+            #   value: "10.42.0.0/16"
+            # - name: APACHE_DISABLE_REWRITE_IP
+            #   value: "1"
             - name: OVERWRITEHOST
               value: cloud.zuraj.com
             - name: OVERWRITEPROTOCOL
